@@ -1,4 +1,5 @@
 import allure
+from helpers import Generate
 
 
 class TestCreateCourier:
@@ -16,11 +17,13 @@ class TestCreateCourier:
         new_courier.register_new_courier_with_data(login, password, first_name)
 
         assert new_courier.response.status_code == 409
+        assert new_courier.response.json()["message"] == "Этот логин уже используется. Попробуйте другой."
 
     @allure.title('Проверка невозможности создания аккаунта курьера без заполнения обязательного поля')
     def test_create_courier_without_required_field_error(self, new_courier):
-        password = new_courier.generate_random_string()
-        first_name = new_courier.generate_random_string()
+        password = Generate.generate_random_string()
+        first_name = Generate.generate_random_string()
         new_courier.register_new_courier_with_data(login=None, password=password, first_name=first_name)
 
         assert new_courier.response.status_code == 400
+        assert new_courier.response.json()["message"] == "Недостаточно данных для создания учетной записи"

@@ -16,6 +16,7 @@ class TestLoginCourier:
         new_courier.login_courier_with_data(login=login[:-1], password=password)
 
         assert new_courier.response.status_code == 404
+        assert new_courier.response.json()["message"] == "Учетная запись не найдена"
         assert bool(new_courier.response.json().get("id")) == False
 
     @allure.title('Проверка невозможности авторизации курьера при незаполненном обязательном поле')
@@ -24,4 +25,5 @@ class TestLoginCourier:
         new_courier.login_courier_with_data(login=login, password="")
 
         assert new_courier.response.status_code == 400
+        assert new_courier.response.json()["message"] == "Недостаточно данных для входа"
         assert bool(new_courier.response.json().get("id")) == False

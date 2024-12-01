@@ -15,9 +15,11 @@ class TestDeleteCourier:
         new_courier.delete_courier_with_data()
 
         assert new_courier.response.status_code == 400
+        assert new_courier.response.json()["message"] == "Недостаточно данных для удаления курьера"
 
     @allure.title('Проверка невозможности удаления аккаунта курьера при некорректном ID в запросе')
     def test_delete_courier_with_uncorrect_id_error(self, new_courier):
         new_courier.delete_courier_with_data(id=000)
 
         assert new_courier.response.status_code == 404
+        assert new_courier.response.json()["message"] == "Курьера с таким id нет"

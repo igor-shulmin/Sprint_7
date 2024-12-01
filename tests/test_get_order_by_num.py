@@ -15,9 +15,11 @@ class TestGetOrderByNum:
         new_order.get_order_with_data()
 
         assert new_order.response.status_code == 400
+        assert new_order.response.json()["message"] == "Недостаточно данных для поиска"
 
     @allure.title('Проверка невозможности возврата заказа при некорректном трек-номере в запросе')
     def test_get_order_by_uncorrect_num_error(self, new_order):
         new_order.get_order_with_data(track_num=00000)
 
         assert new_order.response.status_code == 404
+        assert new_order.response.json()["message"] == "Заказ не найден"

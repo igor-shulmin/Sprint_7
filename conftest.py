@@ -1,20 +1,33 @@
 import pytest
-from helpers import GenerateNewCourier, GenerateNewOrder, CourierOrder
+from api_requests import ApiRequestsCourier, ApiRequestsOrder, ApiRequestsCourierOrder
+
 
 @pytest.fixture
 def new_courier():
-    new_courier = GenerateNewCourier()
+    try:
+        new_courier = ApiRequestsCourier()
 
-    return new_courier
+        yield new_courier
+
+    finally:
+        del new_courier
 
 @pytest.fixture
 def new_order():
-    new_order = GenerateNewOrder()
+    try:
+        new_order = ApiRequestsOrder()
 
-    return new_order
+        yield new_order
+
+    finally:
+        del new_order
 
 @pytest.fixture
 def courier_order():
-    courier_order = CourierOrder()
+    try:
+        courier_order = ApiRequestsCourierOrder()
 
-    return courier_order
+        yield courier_order
+
+    finally:
+        del courier_order

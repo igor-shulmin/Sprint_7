@@ -17,6 +17,7 @@ class TestTakeOrder:
         courier_order.courier_take_order_with_data(order_id=order_id, courier_id=courier_id)
 
         assert courier_order.response.status_code == 409
+        assert courier_order.response.json()["message"] == "Этот заказ уже в работе"
 
     @allure.title('Проверка невозможности принять заказ при некорректном ID курьера')
     def test_take_order_uncorrect_courier_id_error(self, courier_order):
@@ -24,6 +25,7 @@ class TestTakeOrder:
         courier_order.courier_take_order_with_data(order_id=order_id, courier_id=1000000)
 
         assert courier_order.response.status_code == 404
+        assert courier_order.response.json()["message"] == "Курьера с таким id не существует"
 
     @allure.title('Проверка невозможности принять заказ при некорректном ID заказа')
     def test_take_order_uncorrect_order_id_error(self, courier_order):
@@ -31,6 +33,7 @@ class TestTakeOrder:
         courier_order.courier_take_order_with_data(order_id=1000000, courier_id=courier_id)
 
         assert courier_order.response.status_code == 404
+        assert courier_order.response.json()["message"] == "Заказа с таким id не существует"
 
     @allure.title('Проверка невозможности принять заказ при отсутствии ID курьера')
     def test_take_order_without_courier_id_error(self, courier_order):
@@ -38,6 +41,7 @@ class TestTakeOrder:
         courier_order.courier_take_order_with_data(order_id=order_id)
 
         assert courier_order.response.status_code == 400
+        assert courier_order.response.json()["message"] == "Недостаточно данных для поиска"
 
     @allure.title('Проверка невозможности принять заказ при отсутствии ID заказа')
     def test_take_order_without_order_id_error(self, courier_order):
@@ -45,3 +49,4 @@ class TestTakeOrder:
         courier_order.courier_take_order_with_data(courier_id=courier_id)
 
         assert courier_order.response.status_code == 400
+        assert courier_order.response.json()["message"] == "Недостаточно данных для поиска"
