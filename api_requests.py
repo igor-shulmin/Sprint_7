@@ -106,6 +106,14 @@ class ApiRequestsOrder(ApiRequests):
     def get_order_with_data(self, track_num=""):
         self.response = requests.get(f'{Url.url}/{Url.api_orders}/track?t={track_num}')
 
+    @allure.step('Отменяем заказ по трек-номеру')
+    def cancel_order(self, color=None):
+        payload = self.create_new_order(color)
+        payload_string = json.dumps(payload)
+        self.response = requests.post(f'{Url.url}/{Url.api_orders}', data=payload_string)
+        track_num = self.response.json()["track"]
+        requests.put(f'{Url.url}/{Url.api_orders}/cancel?track={track_num}')
+
 
 class ApiRequestsCourierOrder(ApiRequestsCourier, ApiRequestsOrder):
 

@@ -10,6 +10,7 @@ def new_courier():
         yield new_courier
 
     finally:
+        new_courier.delete_courier_by_courier_id()
         del new_courier
 
 @pytest.fixture
@@ -20,6 +21,7 @@ def new_order():
         yield new_order
 
     finally:
+        new_order.cancel_order()
         del new_order
 
 @pytest.fixture
@@ -30,4 +32,6 @@ def courier_order():
         yield courier_order
 
     finally:
+        courier_order.delete_courier_by_courier_id()
+        courier_order.cancel_order()
         del courier_order
